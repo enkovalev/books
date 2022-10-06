@@ -55,6 +55,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Override
     public List<BookStatistic> getBookStatistics(char symbol) {
         Map<String, Integer> statisticsMap = new HashMap<>();
         List<Book> books = repository.getAll();
