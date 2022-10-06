@@ -20,13 +20,10 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void save(Book book) {
-        int id = getAll().stream()
-                .map(Book::getId)
-                .max(Integer::compare)
-                .orElse(0) + 1;
+        Integer id = jdbcTemplate.queryForObject("SELECT MAX(id) FROM BOOK", Integer.class);
 
         jdbcTemplate.update("INSERT INTO BOOK VALUES(?, ?, ?, ?)",
-                id,
+                id == null ? 1 : id + 1,
                 book.getTitle(),
                 book.getAuthor(),
                 book.getDescription());
