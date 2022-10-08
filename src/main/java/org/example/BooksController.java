@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -33,10 +34,10 @@ public class BooksController {
 
     @GetMapping(value = "/grouped-books")
     public ResponseEntity<?> getGroupedBooks() {
-        final List<Book> books = bookService.getGroupedBooks();
+        final Map<String, List<Book>> authorMap = bookService.getGroupedBooks();
 
-        return books != null &&  !books.isEmpty()
-                ? new ResponseEntity<>(books, HttpStatus.OK)
+        return authorMap != null &&  !authorMap.isEmpty()
+                ? new ResponseEntity<>(authorMap, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

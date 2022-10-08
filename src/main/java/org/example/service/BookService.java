@@ -4,6 +4,7 @@ import org.example.model.Book;
 import org.example.model.BookStatistic;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Сервис работы с книгами
@@ -26,7 +27,7 @@ public interface BookService {
      * Получить список книг сгрупированный по автору
      * @return Групированный список
      */
-    List<Book> getGroupedBooks();
+    Map<String, List<Book>> getGroupedBooks();
 
     /**
      * Собрать статистику по авторам

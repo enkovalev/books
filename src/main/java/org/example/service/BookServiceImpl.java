@@ -7,12 +7,10 @@ import org.example.repository.BookRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -32,16 +30,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getGroupedBooks() {
+    public Map<String, List<Book>> getGroupedBooks() {
         List<Book> books = repository.getAll();
         Map<String, List<Book>> authorMap = new HashMap<>();
 
         books.forEach(book -> groupingBooks(authorMap, book));
 
-        return authorMap.values()
-                .stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        return authorMap;
     }
 
     private void groupingBooks(Map<String, List<Book>> authorMap, Book book) {
