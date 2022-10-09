@@ -2,7 +2,6 @@ package org.example.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Книга
@@ -10,10 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 @Getter
 @Setter
 public class Book {
-    /**
-     * Идентификатор
-     */
-    private int id;
 
     /**
      * Название
@@ -29,9 +24,4 @@ public class Book {
      * Описание
      */
     private String description;
-
-    public int getStatistic(char symbol) {
-        return StringUtils.countMatches(title.toLowerCase(), symbol) +
-                StringUtils.countMatches(title.toUpperCase(), symbol);
-    }
 }

@@ -7,7 +7,6 @@ import org.example.repository.BookRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +18,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getSortedBooks() {
-        List<Book> books = repository.getAll();
-        books.sort(Comparator.comparing(Book::getTitle).reversed());
-        return books;
+        return repository.getSortedBooks();
     }
 
     @Override
@@ -52,30 +49,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookStatistic> getBookStatistics(char symbol) {
-        Map<String, Integer> statisticsMap = new HashMap<>();
-        List<Book> books = repository.getAll();
-
-        books.forEach(book -> addBookToStatistic(statisticsMap, book, symbol));
-
-        List<BookStatistic> bookStatistics = new ArrayList<>();
-        statisticsMap.forEach((autor, amount) -> bookStatistics.add(new BookStatistic(autor, amount)));
-
-        bookStatistics.sort(Comparator.comparingInt(BookStatistic::getAmountSymbols));
-
-        return bookStatistics.size() > 10 ? bookStatistics.subList(0, 9) : bookStatistics;
-    }
-
-    private void addBookToStatistic(Map<String, Integer> statisticsMap, Book book, char symbol) {
-        Integer count = statisticsMap.get(book.getAuthor());
-        int amount = book.getStatistic(symbol);
-        if (amount == 0) {
-            return;
-        }
-
-        if (count == null) {
-            statisticsMap.put(book.getAuthor(), amount);
-        } else {
-            statisticsMap.put(book.getAuthor(), count + amount);
-        }
+        return repository.getBookStatistics(symbol);
     }
 }
