@@ -20,7 +20,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     private static final String QUERY_STATISTICS = "SELECT * FROM (" +
             "SELECT author AS author, sum(res) AS amountSymbols FROM (" +
-            "SELECT author AS author, title, (length(title) - length(REPLACE(REPLACE(title, '{1}', ''), '{2}', ''))) AS res FROM BOOK) as atr " +
+            "SELECT author AS author, title, (length(title) - length(REPLACE(lower(title), '{1}', ''))) AS res FROM BOOK) as atr " +
             "GROUP BY author HAVING sum(res) > 0" +
             ") as sum_table ORDER BY amountSymbols desc LIMIT 10";
 
@@ -48,8 +48,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<BookStatistic> getBookStatistics(char symbol) {
         String queryStatistics = QUERY_STATISTICS
-                .replace("{1}", (symbol + "").toLowerCase())
-                .replace("{2}", (symbol + "").toUpperCase());
+                .replace("{1}", (symbol + "").toLowerCase());
         return jdbcTemplate.query(queryStatistics, new BeanPropertyRowMapper<>(BookStatistic.class));
     }
 }
