@@ -13,11 +13,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
     private static final String QUERY_ALL = "SELECT * FROM BOOK";
+
     private static final String QUERY_SORTED_BOOKS = "SELECT * FROM BOOK ORDER BY title desc";
+
     private static final String QUERY_SAVE = "INSERT INTO BOOK (title, author, description) VALUES(?, ?, ?)";
-    private static final String QUERY_STATISTICS = "SELECT * FROM (SELECT author AS author, sum(res) AS amountSymbols FROM " +
-            "(SELECT author AS author, title, (length(title) - length(REPLACE(REPLACE(title, '{1}', ''), '{2}', ''))) AS res FROM BOOK) as atr " +
-            "GROUP BY author HAVING sum(res) > 0) as sum_table ORDER BY amountSymbols desc LIMIT 10";
+
+    private static final String QUERY_STATISTICS = "SELECT * FROM (" +
+            "SELECT author AS author, sum(res) AS amountSymbols FROM (" +
+            "SELECT author AS author, title, (length(title) - length(REPLACE(REPLACE(title, '{1}', ''), '{2}', ''))) AS res FROM BOOK) as atr " +
+            "GROUP BY author HAVING sum(res) > 0" +
+            ") as sum_table ORDER BY amountSymbols desc LIMIT 10";
 
     private final JdbcTemplate jdbcTemplate;
 
